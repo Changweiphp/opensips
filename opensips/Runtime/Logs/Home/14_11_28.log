@@ -1,0 +1,15 @@
+[ 2014-11-28T16:07:16+08:00 ] ::1 /git/chuangwei_web/opensips/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000016s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000448s ]
+
+[ 2014-11-28T16:09:58+08:00 ] ::1 /git/chuangwei_web/opensips/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000017s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000456s ]
+
+[ 2014-11-28T16:40:25+08:00 ] ::1 /git/chuangwei_web/opensips/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000024s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000802s ]
+
