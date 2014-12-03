@@ -1,1 +1,88 @@
-{$name}
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="__PUBLIC__/style/style.css" type="text/css" rel="StyleSheet">
+<link rel="stylesheet" type="text/css"
+	href="__PUBLIC__/jquery-easyui-1.4/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css"
+	href="__PUBLIC__/jquery-easyui-1.4/themes/icon.css">
+<link rel="stylesheet" type="text/css"
+	href="__PUBLIC__/jquery-easyui-1.4/demo/demo.css">
+<script type="text/javascript"
+	src="__PUBLIC__/jquery-easyui-1.4/jquery.min.js"></script>
+<script type="text/javascript"
+	src="__PUBLIC__/jquery-easyui-1.4/jquery.easyui.min.js"></script>
+<script type="text/javascript"
+	src="__PUBLIC__/jquery-easyui-1.4/locale/easyui-lang-zh_CN.js"></script>
+<script src="__PUBLIC__/echarts-2/build/echarts-plain-map.js"></script>
+<body>
+	<!--用户增长图-->
+	<div id='ana_users_inc'>
+		<div id='ana_users_show'
+			style='height: 500px; border: 1px solid #ccc; padding: 10px;'></div>
+	</div>
+</body>
+<script type="text/javascript">
+
+    $(document).ready(function(){
+    	show();
+    	
+	});
+
+	/********************************************************
+	 *
+	 *           用户增长曲线
+	 *
+	 ********************************************************/
+function show(){
+	//debugger
+	 var user_inc = [];
+	user_inc = {$tick_date};
+	var start_u_zoom = ((1 - 30 / user_inc.length) * 100);
+	var usersChart = echarts.init(document.getElementById('ana_users_show'));
+	usersChart.setOption({
+		tooltip : {
+			trigger : 'axis'
+		},
+		legend : {
+			data : [ '新增用户' ]
+		},
+		//工具箱设置
+		toolbox : {
+			show : true,
+			feature : {
+				magicType : {
+					show : true,
+					type : [ 'line', 'bar' ]
+				},
+				saveAsImage : {
+					show : true
+				}
+			}
+		},
+		dataZoom : {
+			show : true,
+			start : start_u_zoom,
+			end : 100,
+		},
+		xAxis : [ {
+			type : 'category',
+			data : {$tick_date}
+		} ],
+		yAxis : [ {
+			type : 'value',
+			splitArea : {
+				show : true
+			}
+		} ],
+		series : [ {
+			name : '新增用户',
+			type : 'line',
+			data : {$count_arr},
+			boundaryGap : false
+		} ]
+	});
+	
+}
+</script>
+</html>

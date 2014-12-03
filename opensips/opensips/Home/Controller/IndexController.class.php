@@ -16,7 +16,7 @@ class IndexController extends Controller {
 		//		D('Aauser');
 		//		$sql = 'select tick,count from ana_user_inc order by tick limit 1';
 		//		$date = $anauser->query($sql);
-		$data = $anauser->order('tick desc', 'count')->select();
+		$data = $anauser->order('tick asc', 'count')->select();
 
 		$tick_date = array ();
 		$count_arr = array ();
@@ -25,7 +25,7 @@ class IndexController extends Controller {
 			$tick_date[] = $row['tick'];
 			$count_arr[] = $row['count'];
 		}
-		print_R($tick_date);
+/*		print_R($tick_date);*/
 		for ($x = 0; $x < count($count_arr); $x++) {
 			if ($x == 0) {
 				$add_count_arr[] = 4600 + $count_arr[$x];
@@ -33,15 +33,14 @@ class IndexController extends Controller {
 				$add_count_arr[] = $add_count_arr[$x -1] + $count_arr[$x];
 			}
 		}
-		$user_inc = array (
-			json_encode($tick_date),
-			json_encode($count_arr),
-			json_encode($add_count_arr)
-		);
-		//		$this->date->$date;
-		print_r($user_inc);
-//		$this->ajaxReturn($data);
-		//		$this->assign("date",print_R($date));
-		//		$this->display();
+//		$user_inc = array (
+			$tick_date=json_encode($tick_date);
+			$count_arr=json_encode($count_arr);
+			$add_count_arr=json_encode($add_count_arr);
+//		);
+        $this->assign("add_count_arr", $add_count_arr);
+		$this->assign("tick_date", $tick_date);
+		$this->assign("count_arr", $count_arr);		
+		$this->display();
 	}
 }
