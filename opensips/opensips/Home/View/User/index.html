@@ -1,0 +1,84 @@
+<HTML>
+<TABLE>{$name}
+</TABLE>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/javascript" src="__PUBLIC__/jquery/jquery.js"></script>
+<title>无标题文档</title>
+<script type="application/javascript">
+	
+	
+	
+	  
+  
+$.fn.serializeObject = function()    
+{    
+   var o = {};    
+   var a = this.serializeArray();    
+   $.each(a, function() {    
+       if (o[this.name]) {    
+           if (!o[this.name].push) {    
+               o[this.name] = [o[this.name]];    
+           }    
+           o[this.name].push(this.value || '');    
+       } else {    
+           o[this.name] = this.value || '';    
+       }    
+   });    
+   return o;    
+};  
+  
+function onClik(){  
+        //var data = $("#form1").serializeArray(); //自动将form表单封装成json  
+        //alert(JSON.stringify(data));  
+        var jsonuserinfo = $('#form1').serializeObject(); 
+        var PhoneReg={TotalCount: '3',Phones:{Phone:['18962253922','18914556765','45566']}};
+        var AccStat={
+        		"TotalCount": 2,
+        		"Accounts": {
+        			"Account": ["206204","115117"]
+        		}
+        	};
+
+        var datajson=JSON.stringify(PhoneReg);
+
+        alert(datajson);  
+        $.ajax({
+        	type : "post",
+        	url : "{:U('Home/SkyChat/QueryAccStat')}" ,
+        	data : {'json':datajson},
+        	success: function(msg){
+        		//var data = msg.table;
+                //$.each(data, function(i, n){
+                //    var row = $("#template").clone();
+                 //   row.find("#OrderID").text(n.订单ID);
+                 //   row.appendTo("#datas");//添加到模板的容器中
+                // }
+        		alert(msg);
+        		$("#era").val(msg);
+        		}
+        	});
+}  
+
+
+
+
+</script>
+<BODY>
+	<FORM id="form1" name="form1" action="" method="post">
+		<INPUT type="text" value="123" name="Phone">
+		</br>
+
+		<!-- INPUT type="submit" value="ok"-->
+		<input type="button" name="submit" onclick="onClik();" value="提交" />
+		</br>
+	</FORM>
+	<input type="text" id="era" />
+	<form action="{:U('Home/SkyChat/upload')}" enctype="multipart/form-data"
+		method="post">
+		<input type="text" name="AccountId" value="liaoxin" />
+		<input type="text" name="pass" value="12345"/>
+		<input type="file" name="photo" />
+		<input type="submit" value="提交">
+	</form>
+</BODY>
+</HTML>
