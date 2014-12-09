@@ -4,7 +4,7 @@ return array (
 	'SHOW_PAGE_TRACE' => true, // 显示页面Trace信息
 
 	/* 主题设置 */
-	'DEFAULT_THEME' => 'aspjzy', // 默认模板主题名称
+// 	'DEFAULT_THEME' => 'aspjzy', // 默认模板主题名称
 	//	'ACTION_SUFFIX' => 'Action', // 操作方法后缀
 	'URL_PARAMS_BIND' => true, // URL变量绑定到操作方法作为参数
 	// 关闭字段缓存

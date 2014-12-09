@@ -38,7 +38,7 @@ class SkyChatController extends RestController {
 				$json = $_POST['json'];
 				//$_REQUEST['json'];
 				$array = json_decode($json, true); // json转aaray数组
-				$phoneno = D("PhoneNo");
+				$phoneno = D("Subscriber");
 				$data = $phoneno->where("phone_num=" . $array['Phone'])->field('username,password')->select();
 				$this->response($data, "json");
 				break;
@@ -82,7 +82,7 @@ class SkyChatController extends RestController {
 				}
 				//				$string = implode(',', $ary); //转字串
 				$Phone_ary = array ();
-				$phoneno = D("PhoneNo");
+				$phoneno = D("Subscriber");
 				for ($i = 0; $i < $Totalcount; $i++) {
 					$data = $phoneno->where("phone_num=" . $Phones_ary[$i])->field('phone_num')->select();
 					//					print_r($data);
@@ -198,27 +198,51 @@ class SkyChatController extends RestController {
 	 * 上传头像
 	 */
 	public function upload() {
-		$upload = new \ Think \ Upload(); // 实例化上传类  
-		$upload->maxSize = 3145728; // 设置附件上传大小   
-		$upload->exts = array (
-			'jpg',
-			'gif',
-			'png',
-			'jpeg'
-		); // 设置附件上传类型  
-		$upload->savePath = '/image/'; // 设置附件上传目录    // 上传文件   
-		$info = $upload->uploadOne($_FILES['photo']);
-		if (!$info) { // 上传错误提示错误信息       
-			$this->error($upload->getError());
-		} else { // 上传成功 获取上传文件信息
-			// 保存表单数据 包括附件数据
-			$User = D("User"); // 实例化User对象
-			$User->create(); // 创建数据对象
-			$User->img = $info['savepath'] . $info['savename']; // 保存上传的照片根据需要自行组装
-			$User->add(); // 写入用户数据到数据库
-			$this->success('上传成功！');
-		}
+		$AccountId=$_POST['AccountId'];
+		$User = D("Subscriber"); // 实例化Anauser对象
+		$data=$User->where('username='.$AccountId)->select();
+		if($data){			
+			$upload = new \ Think \ Upload(); // 实例化上传类
+			$upload->maxSize = 3145728; // 设置附件上传大小
+			$upload->exts = array (
+					'jpg',
+					'gif',
+					'png',
+					'jpeg'
+			); // 设置附件上传类型
+			$rootpath="./Uploads";
+			$upload->savePath = '/userimg/'; // 设置附件上传目录    // 上传文件
+			$info = $upload->uploadOne($_FILES['photo']);
+			if (!$info) { // 上传错误提示错误信息
+				$this->error($upload->getError());
+			} else { // 上传成功 获取上传文件信息
+				// 保存表单数据 包括附件数据
+				$imgurl = $info['savepath'] . $info['savename']; // 保存上传的照片根据需要自行组装
+				$Saveimg=D('AnaUserImg');
+				//判断是否有旧图片
+				$isdata=$User->query('SELECT i.url from subscriber as s JOIN ana_user_img as i ON i.username=s.username WHERE s.username='.$AccountId);
+				if($isdata){
+					//删除旧图片
+					unlink($rootpath.$isdata[0]['url']);
+					$urldata['url']=$imgurl;
+					$Saveimg->where('username='.$AccountId)->save($urldata);
+				}
+				else {
+					$Saveimg->create(); // 创建数据对象
+					$Saveimg->url=$imgurl;
+					$Saveimg->add(); // 写入用户数据到数据库				
+				}				
+				$this->success('上传成功！');
+			}
+		}else {
+		    $this->response('upload:AccountId is null','json');
+		}		
 
+	}
+	public  function rm(){
+		$rootpath="./Uploads/userimg/2014-12-08/548571b2409fe.png";
+		
+		unlink($rootpath);
 	}
 	/**
 	 * 下载头像
@@ -236,10 +260,10 @@ class SkyChatController extends RestController {
                 	$this->response("AccountId is not null", "json");
 					break;
                 }
-                $doimg=D("User");
-                $data=$doimg->where("name='" . $AccountId."'")->select();
+                $doimg=D("AnaUserImg");
+                $data=$doimg->where("username='" . $AccountId."'")->select();
                 if($data){
-                	 $filename=$rootpath.$data[0]['img'];                	
+                	 $filename=$rootpath.$data[0]['url'];                	
                 	 $Http = new \Org\Net\Http;                
                      $Http->download($filename, $AccountId);
                 }else{
