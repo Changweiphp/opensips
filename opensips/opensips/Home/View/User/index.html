@@ -31,15 +31,15 @@ function onClik(){
         //var data = $("#form1").serializeArray(); //自动将form表单封装成json  
         //alert(JSON.stringify(data));  
         var jsonuserinfo = $('#form1').serializeObject(); 
-        var PhoneReg={TotalCount: '3',Phones:{Phone:['18962253922','18914556765','45566']}};
-        var AccStat={
+        var QueryPhoneReg={TotalCount: '3',Phones:{Phone:['18962253922','18914556765','45566']}};
+        var QueryAccStat={
         		"TotalCount": 2,
         		"Accounts": {
         			"Account": ["206204","115117"]
         		}
         	};
 
-        var datajson=JSON.stringify(PhoneReg);
+        var datajson=JSON.stringify(QueryAccStat);
 
         alert(datajson);  
         $.ajax({

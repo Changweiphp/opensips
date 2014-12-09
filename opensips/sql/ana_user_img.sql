@@ -4,4 +4,4 @@ CREATE TABLE IF NOT EXISTS `ana_user_img` (
   `url` varchar(255) DEFAULT NULL,
   `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=ndbcluster DEFAULT CHARSET=latin1;

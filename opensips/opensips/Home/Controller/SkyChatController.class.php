@@ -210,8 +210,7 @@ class SkyChatController extends RestController {
 					'png',
 					'jpeg'
 			); // 设置附件上传类型
-			$rootpath="./Uploads";
-			$upload->savePath = '/userimg/'; // 设置附件上传目录    // 上传文件
+			$upload->savePath = 'userimg/'; // 设置附件上传目录    // 上传文件
 			$info = $upload->uploadOne($_FILES['photo']);
 			if (!$info) { // 上传错误提示错误信息
 				$this->error($upload->getError());
@@ -223,7 +222,7 @@ class SkyChatController extends RestController {
 				$isdata=$User->query('SELECT i.url from subscriber as s JOIN ana_user_img as i ON i.username=s.username WHERE s.username='.$AccountId);
 				if($isdata){
 					//删除旧图片
-					unlink($rootpath.$isdata[0]['url']);
+					unlink(C('UP_rootPath').$isdata[0]['url']);
 					$urldata['url']=$imgurl;
 					$Saveimg->where('username='.$AccountId)->save($urldata);
 				}
@@ -239,16 +238,13 @@ class SkyChatController extends RestController {
 		}		
 
 	}
-	public  function rm(){
-		$rootpath="./Uploads/userimg/2014-12-08/548571b2409fe.png";
-		
-		unlink($rootpath);
+	public  function  tp(){
+		print_r(C('UP_rootPath'));
 	}
 	/**
 	 * 下载头像
 	 */
 	public function download() {
-		$rootpath="./Uploads";
 		switch ($this->_method) {
 			case 'get' : // get请求处理代码      
 //				if ($this->_type == 'html') {
@@ -263,7 +259,7 @@ class SkyChatController extends RestController {
                 $doimg=D("AnaUserImg");
                 $data=$doimg->where("username='" . $AccountId."'")->select();
                 if($data){
-                	 $filename=$rootpath.$data[0]['url'];                	
+                	 $filename=C('UP_rootPath').$data[0]['url'];                	
                 	 $Http = new \Org\Net\Http;                
                      $Http->download($filename, $AccountId);
                 }else{

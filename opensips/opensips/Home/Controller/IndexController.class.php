@@ -110,7 +110,7 @@ class IndexController extends Controller {
 		$sql_d = "select a.tick, (select d.sn1 from dict_region d where d.region=a.region) region, a.`count` from ana_region_day a where a.region!='' && a.tick between '" . end ( $rs ) . "' and '" . $rs [0] . "'";
 		$data = $anauser->query ( $sql );
 		foreach ( $data as $row ) {
-			$regiondays ["$row[0]$row[1]"] = $row [2];
+			$regiondays ["$row[tick]$row[region]"] = $row [count];
 		}
 		$all_regions = array ();
 		foreach ( $provinces as $province ) {
@@ -137,39 +137,6 @@ class IndexController extends Controller {
 		$this->assign ( "all_regions", json_encode ( $all_regions ) );
 		$this->assign ( "date_region", json_encode ( $date_region ) );
 		
-		$this->display ();
-	}
-	public function anauser() {
-		$anauser = D ( 'Anauser' );
-		// $anauser =new \Home\Model\AnauserModel();
-		// D('Aauser');
-		// $sql = 'select tick,count from ana_user_inc order by tick limit 1';
-		// $date = $anauser->query($sql);
-		$data = $anauser->order ( 'tick asc', 'count' )->select ();
-		
-		$tick_date = array ();
-		$count_arr = array ();
-		$add_count_arr = array ();
-		foreach ( $data as $row ) {
-			$tick_date [] = $row ['tick'];
-			$count_arr [] = $row ['count'];
-		}
-		/* print_R($tick_date); */
-		for($x = 0; $x < count ( $count_arr ); $x ++) {
-			if ($x == 0) {
-				$add_count_arr [] = 4600 + $count_arr [$x];
-			} else {
-				$add_count_arr [] = $add_count_arr [$x - 1] + $count_arr [$x];
-			}
-		}
-		// $user_inc = array (
-		$tick_date = json_encode ( $tick_date );
-		$count_arr = json_encode ( $count_arr );
-		$add_count_arr = json_encode ( $add_count_arr );
-		// );
-		$this->assign ( "add_count_arr", $add_count_arr );
-		$this->assign ( "tick_date", $tick_date );
-		$this->assign ( "count_arr", $count_arr );
 		$this->display ();
 	}
 }
