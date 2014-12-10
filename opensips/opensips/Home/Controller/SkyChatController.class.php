@@ -9,8 +9,8 @@
 namespace Home \ Controller;
 use Think \ Controller \ RestController;
 class SkyChatController extends RestController {
-	//	protected $allowMethod    = array('get','post','put'), // REST允许的请求类型列表  
-	//    protected $allowType      = array('html','xml','json'), // REST允许请求的资源类型列表
+// 		protected $allowMethod    = array('get','post','put'), // REST允许的请求类型列表  
+// 	   protected $allowType      = array('html','xml','json'), // REST允许请求的资源类型列表
 
 	/**
 	 * 通过手机号获取SIP账号和密码
@@ -34,13 +34,12 @@ class SkyChatController extends RestController {
 			case 'put' : // put请求处理代码    
 				$this->response($error, 'json');
 				break;
-			case 'post' : // post请求处理代码      
-				$json = $_POST['json'];
-				//$_REQUEST['json'];
+			case 'post' : // post请求处理代码    
+				$json=file_get_contents("php://input");
 				$array = json_decode($json, true); // json转aaray数组
 				$phoneno = D("Subscriber");
 				$data = $phoneno->where("phone_num=" . $array['Phone'])->field('username,password')->select();
-				$this->response($data, "json");
+				$this->response($data,'json');
 				break;
 		}
 	}
@@ -70,14 +69,15 @@ class SkyChatController extends RestController {
 				break;
 			case 'post' : // post请求处理代码      
 
-				$json = $_POST['json'];
+				$json = file_get_contents("php://input");
+				//'{"TotalCount": "3","Phones":{"Phone":["18962253922","18914556765","45566"]}}';
 				$array = json_decode($json, true); // json转aaray数组
 				//数组的传值个数
 				$Totalcount = $array['TotalCount'];
 				//数组内容
 				$Phones_ary = $array['Phones']['Phone']; //读取电话array数组
 				if (empty ($Phones_ary)) {
-					$this->response($ary_ero, "json");
+					$this->response($ary_ero, 'json');
 					break;
 				}
 				//				$string = implode(',', $ary); //转字串
@@ -115,7 +115,8 @@ class SkyChatController extends RestController {
 					$Code_ary,
 					$date_array
 				);
-				$this->response($response_data, "json");
+				$this->ajaxReturn($response_data);
+// 				$this->response($response_data, "json");
 				break;
 		}
 	}
@@ -145,14 +146,14 @@ class SkyChatController extends RestController {
 				break;
 			case 'post' : // post请求处理代码      
 
-				$json = $_POST['json'];
+				$json = file_get_contents("php://input");
 				$array = json_decode($json, true); // json转aaray数组
 				//数组的传值个数
 				$Totalcount = $array['TotalCount'];
 				//数组内容
 				$Accounts_ary = $array['Accounts']['Account']; //读取电话array数组
 				if (empty ($Accounts_ary)) {
-					$this->response($ary_ero, "json");
+					$this->response($ary_ero,'json');
 					break;
 				}
 				//				$string = implode(',', $ary); //转字串

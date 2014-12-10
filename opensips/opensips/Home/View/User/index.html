@@ -30,7 +30,7 @@ $.fn.serializeObject = function()
 function onClik(){  
         //var data = $("#form1").serializeArray(); //自动将form表单封装成json  
         //alert(JSON.stringify(data));  
-        var jsonuserinfo = $('#form1').serializeObject(); 
+        var QueryPhoneNo = $('#form1').serializeObject(); 
         var QueryPhoneReg={TotalCount: '3',Phones:{Phone:['18962253922','18914556765','45566']}};
         var QueryAccStat={
         		"TotalCount": 2,
@@ -39,14 +39,18 @@ function onClik(){
         		}
         	};
 
-        var datajson=JSON.stringify(QueryAccStat);
-
+        var datajson=JSON.stringify(QueryPhoneNo);
+        //var setdate ={'json':datajson};
         alert(datajson);  
         $.ajax({
         	type : "post",
-        	url : "{:U('Home/SkyChat/QueryAccStat')}" ,
-        	data : {'json':datajson},
+        	url : "http://localhost/opensips/index.php/Home/SkyChat/QueryPhoneNo.html" ,
+        	data :{'json':datajson} ,        
+            error : function(eor) {debugger
+                alert(eor);
+            },
         	success: function(msg){
+        		//	dataType: 'json',
         		//var data = msg.table;
                 //$.each(data, function(i, n){
                 //    var row = $("#template").clone();

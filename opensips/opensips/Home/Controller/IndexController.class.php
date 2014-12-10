@@ -110,7 +110,7 @@ class IndexController extends Controller {
 		$sql_d = "select a.tick, (select d.sn1 from dict_region d where d.region=a.region) region, a.`count` from ana_region_day a where a.region!='' && a.tick between '" . end ( $rs ) . "' and '" . $rs [0] . "'";
 		$data = $anauser->query ( $sql );
 		foreach ( $data as $row ) {
-			$regiondays ["$row[tick]$row[region]"] = $row [count];
+			$regiondays ["$row[0]$row[1]"] = $row [2];
 		}
 		$all_regions = array ();
 		foreach ( $provinces as $province ) {
@@ -135,8 +135,8 @@ class IndexController extends Controller {
 		$this->assign ( "provinces", json_encode ( $provinces ) );
 		$this->assign ( "region_dates", json_encode ( $region_dates ) );
 		$this->assign ( "all_regions", json_encode ( $all_regions ) );
-		$this->assign ( "date_region", json_encode ( $date_region ) );
-		
+		$this->assign ( "date_region", json_encode ( $date_region ) );		
 		$this->display ();
 	}
+
 }
