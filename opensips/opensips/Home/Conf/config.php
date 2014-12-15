@@ -12,7 +12,7 @@ return array (
 		                           // 'DB_FIELDS_CACHE' => false,
 		                           // 上传目录
 		'UP_rootPath' => './Uploads/',
-		
+		'UP_savePath' => 'UserImg/',
 		// 添加数据库配置信息
 		// 'DB_TYPE' => 'mysql', // 数据库类型
 		// 'DB_HOST' => '10.168.150.81', // 服务器地址

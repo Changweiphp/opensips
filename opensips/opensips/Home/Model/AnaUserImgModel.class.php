@@ -7,7 +7,7 @@ class AnaUserImgModel extends Model {
 	/**
 	 * 字段映射
 	 */
-	protected $_map = array(
-        'AccountId' =>'username', 
-    );
+// 	protected $_map = array(
+//         'AccountId' =>'username', 
+//     );
 }
